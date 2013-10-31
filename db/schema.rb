@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131031021036) do
+ActiveRecord::Schema.define(version: 20131031034858) do
 
   create_table "addresses", force: true do |t|
     t.string   "street_line_1"
@@ -23,11 +23,24 @@ ActiveRecord::Schema.define(version: 20131031021036) do
     t.datetime "updated_at"
   end
 
+  create_table "attachments", force: true do |t|
+    t.string   "filename"
+    t.string   "description"
+    t.integer  "patient_id"
+    t.integer  "referral_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "attachments", ["patient_id"], name: "index_attachments_on_patient_id"
+  add_index "attachments", ["referral_id"], name: "index_attachments_on_referral_id"
+
   create_table "patients", force: true do |t|
     t.string   "first_name"
     t.string   "last_name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "address_id"
   end
 
   create_table "practices", force: true do |t|
