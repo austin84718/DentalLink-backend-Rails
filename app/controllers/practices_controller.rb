@@ -69,6 +69,6 @@ class PracticesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def practice_params
-      params.require(:practice).permit(:type, :name, :description, :address_id)
+      params.require(:practice).permit(:name, :description, :address_id)
     end
 end
