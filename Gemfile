@@ -40,6 +40,6 @@ group :production do
   gem 'pg', '~> 0.17.0'
 end
 
-group :development, :testing do
-  gem 'sqlite3'
-end
+#group :development, :test do
+#  gem 'sqlite3'
+#end
