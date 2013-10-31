@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Orig practice:</strong>
+  <%= @referral.orig_practice %>
+</p>
+
+<p>
+  <strong>Dest practice:</strong>
+  <%= @referral.dest_practice %>
+</p>
+
+<p>
+  <strong>Patient:</strong>
+  <%= @referral.patient %>
+</p>
+
+<p>
+  <strong>Memo:</strong>
+  <%= @referral.memo %>
+</p>
+
+<%= link_to 'Edit', edit_referral_path(@referral) %> |
+<%= link_to 'Back', referrals_path %>
