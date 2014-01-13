@@ -13,15 +13,15 @@
 
   <div class="field">
     <%= f.label :orig_practice %><br>
-    <%= f.text_field :orig_practice %>
+    <%= f.collection_select :orig_practice_id, Practice.all, :id, :name, prompt: true %>
   </div>
   <div class="field">
     <%= f.label :dest_practice %><br>
-    <%= f.text_field :dest_practice %>
+    <%= f.collection_select :dest_practice_id, Practice.all, :id, :name, prompt: true %>
   </div>
   <div class="field">
     <%= f.label :patient %><br>
-    <%= f.text_field :patient %>
+    <%= f.collection_select :patient_id, Patient.all, :id, :full_name, prompt: true   %>
   </div>
   <div class="field">
     <%= f.label :memo %><br>
