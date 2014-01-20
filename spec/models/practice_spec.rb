@@ -1,18 +1,24 @@
 require 'spec_helper'
 
 describe Practice do
+  subject { FactoryGirl.build(:practice) }
+
   describe 'fields validations' do
+    it {should be_valid}
 
-    it 'is invalid without an address_id' do
-      Practice.create({address_id: nil, name: 'name'}).should_not be_valid
+    describe 'is invalid without an address_id' do
+      before { subject.address = nil }
+      it { should_not be_valid }
     end
 
-    it 'is invalid without a name' do
-      Practice.create({name: nil, address_id: 1}).should_not be_valid
+    describe 'is invalid without a name' do
+      before { subject.name = nil }
+      it { should_not be_valid }
     end
 
-    it 'is invalid without a name' do
-      Practice.create({name: '', address_id: 1}).should_not be_valid
+    describe 'is invalid with blank name' do
+      before { subject.name = ' ' }
+      it { should_not be_valid }
     end
 
   end

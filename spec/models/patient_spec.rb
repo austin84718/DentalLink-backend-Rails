@@ -1,14 +1,18 @@
 require 'spec_helper'
 
 describe Patient do
+  subject { FactoryGirl.build(:patient) }
   describe 'fields validations' do
+    it { should be_valid }
 
-    it 'is invalid without a first_name' do
-      Patient.create({first_name: nil}).should_not be_valid
+    describe 'is invalid without a first_name' do
+      before { subject.first_name = nil }
+      it { should_not be_valid }
     end
 
-    it 'is invalid without a last_name' do
-      Patient.create({last_name: nil}).should_not be_valid
+    describe 'is invalid without a last_name' do
+      before { subject.last_name = nil }
+      it { should_not be_valid }
     end
 
   end
