@@ -1,4 +1,5 @@
 referral-server-ruby
 ====================
 
-generic referral-server, using Ruby and Sinatra
+Server API for tracking dental referrals, using Ruby on Rails.
+
