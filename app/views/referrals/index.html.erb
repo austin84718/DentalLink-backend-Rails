@@ -16,9 +16,9 @@
   <tbody>
     <% @referrals.each do |referral| %>
       <tr>
-        <td><%= referral.orig_practice %></td>
-        <td><%= referral.dest_practice %></td>
-        <td><%= referral.patient %></td>
+        <td><%= referral.orig_practice_id %></td>
+        <td><%= referral.dest_practice_id %></td>
+        <td><%= referral.patient_id %></td>
         <td><%= referral.memo %></td>
         <td><%= link_to 'Show', referral %></td>
         <td><%= link_to 'Edit', edit_referral_path(referral) %></td>

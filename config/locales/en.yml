@@ -20,4 +20,8 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  auth:
+      token:
+        invalid_token: 'Invalid authentication token'
+      sessions:
+        invalid_login: 'Login information is incorrect, please try again'
