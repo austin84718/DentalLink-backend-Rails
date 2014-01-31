@@ -7,7 +7,7 @@ FactoryGirl.define do
     last_name "My Last Name"
     username 'user'
     password 'my password'
-    email 'email@email.eml'
+    email 'email@domain.eml'
     practice_id 1
   end
 end
