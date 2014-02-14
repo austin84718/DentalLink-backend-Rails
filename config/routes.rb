@@ -11,6 +11,7 @@ ReferralServerRuby::Application.routes.draw do
 
   resources :practices
 
+  resources :practice_invitations, only: [:create, :destroy]
   #we don't need users as a resourceful route, since we have authentication framework that handles registrations and other things
   #resources :users
 

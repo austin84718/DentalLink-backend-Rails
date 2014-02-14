@@ -12,10 +12,6 @@ class PracticesController < ApplicationController
   def show
   end
 
-  # GET /practices/new
-  def new
-    @practice = Practice.new
-  end
 
   # GET /practices/1/edit
   def edit

@@ -4,9 +4,9 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
 
   before_filter :configure_permitted_parameters, if: :devise_controller?
-  before_filter :authenticate_user_from_token!
+  #before_filter :authenticate_user_from_token!
   # This is Devise's authentication
-  before_filter :authenticate_user!
+  #before_filter :authenticate_user!
 
   respond_to :json
 
