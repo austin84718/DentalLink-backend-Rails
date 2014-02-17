@@ -1,5 +1,5 @@
 class PracticeInvitationsController < ApplicationController
-  before_action :set_practice_invitation, only: [:show, :edit, :update, :destroy]
+  before_action :set_practice_invitation, only: [:destroy]
 
 
   # POST /practice_invitations
@@ -9,10 +9,8 @@ class PracticeInvitationsController < ApplicationController
 
     respond_to do |format|
       if @practice_invitation.save
-        format.html { redirect_to @practice_invitation, notice: 'Practice invitation was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @practice_invitation }
+        format.json { render json: @practice_invitation, status: :created }
       else
-        format.html { render action: 'new' }
         format.json { render json: @practice_invitation.errors, status: :unprocessable_entity }
       end
     end
@@ -23,8 +21,7 @@ class PracticeInvitationsController < ApplicationController
   def destroy
     @practice_invitation.destroy
     respond_to do |format|
-      format.html { redirect_to practice_invitations_url }
-      format.json { head :no_content }
+      format.json { render json: 'Ivitation was successfully removed.', status: :ok }
     end
   end
 
@@ -36,6 +33,6 @@ class PracticeInvitationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def practice_invitation_params
-      params[:practice_invitation]
+      params.require(:practice).permit(:practice_name, :contact_first_name, :contact_last_name, :contact_email, :contact_phone)
     end
 end

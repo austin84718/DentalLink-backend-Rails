@@ -25,7 +25,7 @@ class PracticesController < ApplicationController
     respond_to do |format|
       if @practice.save
         format.html { redirect_to @practice, notice: 'Practice was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @practice }
+        format.json { render json: @practice, status: :created}
       else
         format.html { render action: 'new' }
         format.json { render json: @practice.errors, status: :unprocessable_entity }

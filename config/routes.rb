@@ -3,15 +3,15 @@ ReferralServerRuby::Application.routes.draw do
 
   devise_for :users, path: '', path_names: {  registration: 'sign_up'}, controllers: {sessions: :sessions, registrations: :registrations, passwords: :passwords}, token_authentication_key: 'authentication_token'
 
-  resources :addresses
+  resources :addresses, defaults: {format: :json}
 
-  resources :patients
+  resources :patients, defaults: {format: :json}
 
-  resources :referrals
+  resources :referrals, defaults: {format: :json}
 
-  resources :practices
+  resources :practices, defaults: {format: :json}
 
-  resources :practice_invitations, only: [:create, :destroy]
+  resources :practice_invitations, only: [:create, :destroy], defaults: {format: :json}
   #we don't need users as a resourceful route, since we have authentication framework that handles registrations and other things
   #resources :users
 
