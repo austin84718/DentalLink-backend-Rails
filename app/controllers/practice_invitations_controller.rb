@@ -6,9 +6,11 @@ class PracticeInvitationsController < ApplicationController
   # POST /practice_invitations.json
   def create
     @practice_invitation = PracticeInvitation.new(practice_invitation_params)
+    practice = Practice.new({name: @practice_invitation.practice_name, status: :invite})
+    practice.practice_invitations << @practice_invitation
 
     respond_to do |format|
-      if @practice_invitation.save
+      if practice.save
         format.json { render json: @practice_invitation, status: :created }
       else
         format.json { render json: @practice_invitation.errors, status: :unprocessable_entity }
@@ -21,7 +23,7 @@ class PracticeInvitationsController < ApplicationController
   def destroy
     @practice_invitation.destroy
     respond_to do |format|
-      format.json { render json: 'Ivitation was successfully removed.', status: :ok }
+      format.json { render json: 'Invitation was successfully removed.', status: :ok }
     end
   end
 
