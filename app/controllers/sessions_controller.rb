@@ -1,7 +1,7 @@
 class SessionsController < Devise::SessionsController
   include Devise::Controllers::Helpers
   include ApiHelper
-
+  skip_authorization_check
   prepend_before_filter :require_no_authentication, only: [:create]
  # skip_before_filter :verify_authenticity_token, if: Proc.new { |c| c.request.format == 'application/json' }
   before_filter :validate_auth_token, except: :create

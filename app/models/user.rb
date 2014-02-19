@@ -14,6 +14,24 @@ class User < ActiveRecord::Base
 
   before_save :ensure_authentication_token
 
+  ROLES = %i[admin doctor aux]
+  #attr_accessible :roles
+
+  def roles=(roles)
+    self.roles_mask = (roles & ROLES).map { |r| 2**ROLES.index(r) }.inject(0, :+)
+  end
+
+  def roles
+    ROLES.reject do |r|
+      ((roles_mask.to_i || 0) & 2**ROLES.index(r)).zero?
+    end
+  end
+
+  def is?(role)
+    roles.include?(role)
+  end
+
+
   def ensure_authentication_token
     reset_authentication_token if authentication_token.blank?
   end

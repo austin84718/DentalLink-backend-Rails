@@ -1,6 +1,6 @@
 class PracticeInvitationsController < ApplicationController
   before_action :set_practice_invitation, only: [:destroy]
-
+  load_and_authorize_resource
 
   # POST /practice_invitations
   # POST /practice_invitations.json
