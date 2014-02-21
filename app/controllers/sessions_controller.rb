@@ -11,7 +11,7 @@ class SessionsController < Devise::SessionsController
   respond_to :json
 
   def create
-    resource = User.find_for_database_authentication(email: params[:user][:email])
+    resource = User.find_for_database_authentication(email: auth_params[:email])
     return failure unless resource
 
     if resource.valid_password?(params[:user][:password])
@@ -37,4 +37,9 @@ class SessionsController < Devise::SessionsController
   def set_csrf_header
     response.headers['X-CSRF-Token'] = form_authenticity_token
   end
+
+  def auth_params
+    params.require(:user).permit(:email, :password)
+  end
+
 end

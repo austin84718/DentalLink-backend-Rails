@@ -1,10 +1,11 @@
 class PracticesController < ApplicationController
   before_action :set_practice, only: [:show, :edit, :update, :destroy]
+  load_and_authorize_resource
 
   # GET /practices
   # GET /practices.json
   def index
-    @practices = Practice.all
+    render json: Practice.all, status: :ok
   end
 
   # GET /practices/1

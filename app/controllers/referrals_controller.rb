@@ -1,6 +1,7 @@
 class ReferralsController < ApplicationController
   before_action :set_referral, only: [:show, :edit, :update, :destroy]
-
+  before_action :create_referral, only: [:create]
+  load_and_authorize_resource
   # GET /referrals
   # GET /referrals.json
   def index
@@ -24,7 +25,6 @@ class ReferralsController < ApplicationController
   # POST /referrals
   # POST /referrals.json
   def create
-    @referral = Referral.new(referral_params)
 
     respond_to do |format|
       if @referral.save
@@ -66,6 +66,10 @@ class ReferralsController < ApplicationController
     def set_referral
       @referral = Referral.find(params[:id])
     end
+
+  def create_referral
+    @referral = Referral.new(referral_params)
+  end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def referral_params

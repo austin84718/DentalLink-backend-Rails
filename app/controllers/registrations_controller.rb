@@ -4,7 +4,7 @@ class RegistrationsController < Devise::RegistrationsController
   skip_before_filter :authenticate_scope!, only: [:update]
   before_filter :validate_auth_token, except: :create
   after_filter :set_csrf_header, only: [:create]
-
+  skip_authorization_check
   respond_to :json
 
   def create
@@ -14,10 +14,10 @@ class RegistrationsController < Devise::RegistrationsController
       unless resource.active_for_authentication?
         expire_data_after_sign_in!
       end
-      render json: {success: true}
+      render json: resource, status: :ok
     else
       clean_up_passwords resource
-      render status: :unauthorized, json: {errors: resource.errors}
+      render status: :unprocessable_entity, json: {errors: resource.errors}
     end
   end
 
@@ -44,7 +44,7 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def sign_up_params
-    params.require(:user).permit( :username, :email, :password, :password_confirmation, :first_name, :last_name, :practice_id)
+    params.require(:user).permit( :username, :email, :password, :password_confirmation, :first_name, :last_name, :practice_id, :roles_mask, :middle_initial)
   end
 
   def set_csrf_header

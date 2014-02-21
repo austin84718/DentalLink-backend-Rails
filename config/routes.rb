@@ -12,6 +12,10 @@ ReferralServerRuby::Application.routes.draw do
   resources :practices, defaults: {format: :json}
 
   resources :practice_invitations, only: [:create, :destroy], defaults: {format: :json}
+
+  get :users, to: 'users#index'
+
+  get 'login',to: redirect('/pages/dentalLinks.html')
   #we don't need users as a resourceful route, since we have authentication framework that handles registrations and other things
   #resources :users
 

@@ -1,10 +1,11 @@
 class PatientsController < ApplicationController
   before_action :set_patient, only: [:show, :edit, :update, :destroy]
+  load_and_authorize_resource
 
   # GET /patients
   # GET /patients.json
   def index
-    @patients = Patient.all
+    render json: Patient.all, status: :ok
   end
 
   # GET /patients/1
