@@ -16,6 +16,8 @@ ReferralServerRuby::Application.routes.draw do
   get :users, to: 'users#index'
 
   get 'login',to: redirect('/pages/dentalLinks.html')
+
+  match 'sign_in', to: 'users#index',  via: 'OPTIONS'
   #we don't need users as a resourceful route, since we have authentication framework that handles registrations and other things
   #resources :users
 
