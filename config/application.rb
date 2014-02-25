@@ -26,5 +26,14 @@ module ReferralServerRuby
     # config.i18n.default_locale = :de
 
     config.autoload_paths += %W(#{config.root}/lib)
+
+    #Provide CORS support
+    config.middleware.use Rack::Cors do
+      allow do
+        origins '*'
+        resource '*', headers: :any, methods: [:get, :post, :put, :patch, :delete, :options]
+      end
+    end
+
   end
 end
