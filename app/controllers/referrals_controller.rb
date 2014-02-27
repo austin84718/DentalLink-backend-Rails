@@ -26,6 +26,22 @@ class ReferralsController < ApplicationController
   # POST /referrals.json
   def create
 
+    unless @referral.dest_practice_id
+      practice_invite = PracticeInvitation.create(practice_invitation_params)
+      practice = Practice.create({name: practice_invite.practice_name, status: :invite})
+      practice.practice_invitations << practice_invite
+      @referral.dest_practice = practice
+    end
+
+    unless @referral.patient_id
+      patient = Patient.create(patient_params)
+      @referral.patient = patient
+    end
+
+    unless @referral.orig_practice_id
+      @referral.orig_practice = current_user.practice
+    end
+
     respond_to do |format|
       if @referral.save
         format.html { redirect_to @referral, notice: 'Referral was successfully created.' }
@@ -74,5 +90,13 @@ class ReferralsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def referral_params
       params.require(:referral).permit(:orig_practice_id, :dest_practice_id, :patient_id, :memo)
+    end
+
+    def practice_invitation_params
+      params.require(:practice).permit(:contact_first_name, :contact_last_name, :contact_email, :practice_name, :contact_phone)
+    end
+
+    def patient_params
+      params.require(:patient).permit(:first_name, :last_name, :birthday, :email, :phone)
     end
 end
