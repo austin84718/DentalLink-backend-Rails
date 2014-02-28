@@ -11,4 +11,6 @@ class Practice < ActiveRecord::Base
   def invited?
     status == :invite
   end
+
+
 end

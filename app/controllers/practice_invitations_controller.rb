@@ -5,8 +5,8 @@ class PracticeInvitationsController < ApplicationController
   # POST /practice_invitations
   # POST /practice_invitations.json
   def create
-    @practice_invitation = PracticeInvitation.new(practice_invitation_params)
-    practice = Practice.new({name: @practice_invitation.practice_name, status: :invite})
+    practice_invitation = PracticeInvitation.new(practice_invitation_params)
+    practice = Practice.new({name: practice_invitation.practice_name, status: :invite})
     practice.practice_invitations << @practice_invitation
 
     respond_to do |format|

@@ -1,4 +1,5 @@
 class ReferralsController < ApplicationController
+  include InviteHelper
   before_action :set_referral, only: [:show, :edit, :update, :destroy]
   before_action :create_referral, only: [:create]
   load_and_authorize_resource
@@ -27,10 +28,7 @@ class ReferralsController < ApplicationController
   def create
 
     unless @referral.dest_practice_id
-      practice_invite = PracticeInvitation.create(practice_invitation_params)
-      practice = Practice.create({name: practice_invite.practice_name, status: :invite})
-      practice.practice_invitations << practice_invite
-      @referral.dest_practice = practice
+     @referral.dest_practice = invite_practice(practice_invitation_params)
     end
 
     unless @referral.patient_id
