@@ -10,7 +10,7 @@ ReferralServerRuby::Application.configure do
   config.eager_load = false
 
   # Show full error reports and disable caching.
-  config.consider_all_requests_local       = true
+  config.consider_all_requests_local = true
   config.action_controller.perform_caching = false
 
   # Don't care if the mailer can't send.
@@ -27,11 +27,17 @@ ReferralServerRuby::Application.configure do
   # number of complex assets.
   config.assets.debug = true
 
-  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+  config.action_mailer.default_url_options = {:host => 'localhost:3000'}
   config.action_mailer.delivery_method = :smtp
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.default :charset => "utf-8"
   config.action_mailer.smtp_settings = {
-      address: "smtp.orange.net",
-      port: 25,
-      domain: 'orange.net', #you can also use google.com
+      address: "smtp.mandrillapp.com",
+      port: 587,
+      domain: 'mandrillapp.com',
+      user_name: 'mezerny@gmail.com',
+      password: 'cIRBbMhS1GJIgLhTCBD42g'
   }
+
 end

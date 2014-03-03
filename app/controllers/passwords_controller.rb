@@ -1,6 +1,8 @@
 class PasswordsController < Devise::PasswordsController
   #skip_before_filter :verify_authenticity_token#, if: Proc.new { |c| c.request.format == 'application/json' }
   after_filter :set_csrf_header, only: [:create]
+  skip_authorization_check
+
   respond_to :json
 
   def create
