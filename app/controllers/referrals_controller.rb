@@ -40,6 +40,8 @@ class ReferralsController < ApplicationController
       @referral.orig_practice = current_user.practice
     end
 
+    @referral.status = :sent
+
     respond_to do |format|
       if @referral.save
         format.html { redirect_to @referral, notice: 'Referral was successfully created.' }
