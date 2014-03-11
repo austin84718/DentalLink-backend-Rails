@@ -1,3 +1,4 @@
+require 'mandrill'
 module MailHelper
 
   def send_email (options)
@@ -23,7 +24,6 @@ module MailHelper
     rescue Mandrill::Error => e
       # Mandrill errors are thrown as exceptions
       puts "A mandrill error occurred: #{e.class} - #{e.message}"
-      # A mandrill error occurred: Mandrill::UnknownSubaccountError - No subaccount exists with the id 'customer-123'
       raise
     end
   end

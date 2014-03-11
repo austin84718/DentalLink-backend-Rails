@@ -7,7 +7,9 @@ ReferralServerRuby::Application.routes.draw do
 
   resources :patients, defaults: {format: :json}
 
-  resources :referrals, defaults: {format: :json}
+  resources :referrals, defaults: {format: :json} do
+    put :status, to: 'referrals#change_status', on: :member
+  end
 
   resources :practices, defaults: {format: :json}
 
