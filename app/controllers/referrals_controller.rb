@@ -64,7 +64,7 @@ class ReferralsController < ApplicationController
     respond_to do |format|
       if @referral.update(status_params)
         send_status_emails (status_params[:status])
-        format.json { render json: @referral, status: :ok  }
+        format.json { render json: @referral, status: :ok }
       else
         format.json { render json: @referral.errors, status: :unprocessable_entity }
       end
@@ -99,59 +99,66 @@ class ReferralsController < ApplicationController
   private
 
   def send_status_emails(status)
-    @referral.orig_practice.users.each do |user|
-      send_email({
-                     html: "<h2>Referral status has been changed!</h2><p>Dear #{user.first_name} #{user.last_name}, your referral was #{status}</p>",
-                     text: "Dear #{user.first_name} #{user.last_name}, your referral status has been changed! Your referral was #{status}",
-                     subject: "Your referral was #{status}",
-                     from_email: 'dental.links@example.com',
-                     from_name: 'Dental Links Team',
-                     to_email: user.email,
-                     to_name: "#{user.first_name} #{user.last_name}"
-
-                 })
-    end
+    recipients = @referral.orig_practice.users
+    send_email({
+                   template_name: "referral-status",
+                   template_content: {},
+                   global_merge_vars:{},
+                   merge_vars: recipients.map { |u| {
+                           rcpt: u.email,
+                           vars: [
+                               {name: 'FIRST_NAME', content: u.first_name},
+                               {name: 'LAST_NAME', content: u.last_name},
+                               {name: 'STATUS', content: status}
+                           ]
+                       }
+                       },
+                   recipients: recipients.map { |u| {email: u.email, name: "#{u.first_name} #{u.last_name}", type: 'to'} }
+               })
   end
 
 
   def send_email_to_doctor(dest_practice)
-    dest_practice.users.each do |user|
-      send_email({
-                     html: "<h2>You have received new referral!</h2><p>Click <a href='http://referral-frontend.s3-website-us-east-1.amazonaws.com/pages/#/sign_in'>here</a> to see the referral that doctor #{current_user.first_name} #{current_user.last_name} just sent you.</p>",
-                     text: "Dear #{user.first_name} #{user.last_name}, You have received a new referral! Visit this URL to see the referral that doctor #{current_user.first_name} #{current_user.middle_initial} #{current_user.last_name} just sent you: http://referral-frontend.s3-website-us-east-1.amazonaws.com/pages/#/sign_in",
-                     subject: 'You have received a referral!',
-                     from_email: 'dental.links@example.com',
-                     from_name: 'Dental Links Team',
-                     to_email: user.email,
-                     to_name: "#{user.first_name} #{user.last_name}"
-
-                 })
-    end
+    recipients = @referral.orig_practice.users
+    send_email({
+                   template_name: 'referral-notification',
+                   template_content: {},
+                   merge_vars:
+                       recipients.map { |u| {
+                           rcpt: u.email,
+                           vars: [
+                               {name: 'FIRST_NAME', content: u.first_name},
+                               {name: 'LAST_NAME', content: u.last_name},
+                           ]
+                       }},
+        recipients: recipients.map { |u| {email: u.email, name: "#{u.first_name} #{u.last_name}", type: 'to'} }
+               })
   end
 
-  # Use callbacks to share common setup or constraints between actions.
-  def set_referral
-    @referral = Referral.find(params[:id])
-  end
+# Use callbacks to share common setup or constraints between actions.
+def set_referral
+  @referral = Referral.find(params[:id])
+end
 
-  def create_referral
-    @referral = Referral.new(referral_params)
-  end
+def create_referral
+  @referral = Referral.new(referral_params)
+end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
-  def referral_params
-    params.require(:referral).permit(:orig_practice_id, :dest_practice_id, :patient_id, :memo, :status)
-  end
+# Never trust parameters from the scary internet, only allow the white list through.
+def referral_params
+  params.require(:referral).permit(:orig_practice_id, :dest_practice_id, :patient_id, :memo, :status)
+end
 
-  def practice_invitation_params
-    params.require(:practice).permit(:contact_first_name, :contact_last_name, :contact_email, :practice_name, :contact_phone)
-  end
+def practice_invitation_params
+  params.require(:practice).permit(:contact_first_name, :contact_last_name, :contact_email, :practice_name, :contact_phone)
+end
 
-  def patient_params
-    params.require(:patient).permit(:first_name, :last_name, :birthday, :email, :phone)
-  end
+def patient_params
+  params.require(:patient).permit(:first_name, :last_name, :birthday, :email, :phone)
+end
 
-  def status_params
-    params.require(:referral).permit(:status)
-  end
+def status_params
+  params.require(:referral).permit(:status)
+end
+
 end
