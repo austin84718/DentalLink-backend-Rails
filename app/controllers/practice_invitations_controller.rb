@@ -7,13 +7,13 @@ class PracticeInvitationsController < ApplicationController
   def create
     practice_invitation = PracticeInvitation.new(practice_invitation_params)
     practice = Practice.new({name: practice_invitation.practice_name, status: :invite})
-    practice.practice_invitations << @practice_invitation
+    practice.practice_invitations << practice_invitation
 
     respond_to do |format|
       if practice.save
-        format.json { render json: @practice_invitation, status: :created }
+        format.json { render json: practice_invitation, status: :created }
       else
-        format.json { render json: @practice_invitation.errors, status: :unprocessable_entity }
+        format.json { render json: practice_invitation.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -28,13 +28,13 @@ class PracticeInvitationsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_practice_invitation
-      @practice_invitation = PracticeInvitation.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_practice_invitation
+    @practice_invitation = PracticeInvitation.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def practice_invitation_params
-      params.require(:practice).permit(:practice_name, :contact_first_name, :contact_last_name, :contact_email, :contact_phone)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def practice_invitation_params
+    params.require(:practice).permit(:practice_name, :contact_first_name, :contact_last_name, :contact_email, :contact_phone)
+  end
 end

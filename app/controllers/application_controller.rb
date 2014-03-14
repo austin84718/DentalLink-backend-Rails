@@ -3,7 +3,6 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :null_session
 
-  #before_filter :allow_cors
 
   before_filter :configure_permitted_parameters, if: :devise_controller?
   before_filter :authenticate_user_from_token!
@@ -32,7 +31,7 @@ class ApplicationController < ActionController::Base
 
   def authenticate_user_from_token!
 
-    user_email = params[:email].presence
+    user_email = request.headers['From']
     user = user_email && User.find_by_email(user_email)
 
     # Notice how we use Devise.secure_compare to compare the token
@@ -43,10 +42,4 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def allow_cors
-    headers['Access-Control-Allow-Origin'] = '*'
-    headers['Access-Control-Request-Method'] = '*'
-    headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token, Authorization'
-    head(:ok) if request.method_symbol == :options
-  end
 end
