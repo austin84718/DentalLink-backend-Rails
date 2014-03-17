@@ -45,6 +45,13 @@ class ReferralsController < ApplicationController
       @referral.orig_practice = current_user.practice
     end
 
+    if params[:attachments]
+      params[:attachments].each do |attachment|
+
+        @referral.attachments << Attachment.new({filename: attachment, referral_id: @referral.id, patient_id: @referral.patient.id})
+      end
+    end
+
     @referral.status = :sent
 
     respond_to do |format|

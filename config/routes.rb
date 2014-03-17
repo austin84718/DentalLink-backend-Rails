@@ -5,6 +5,8 @@ ReferralServerRuby::Application.routes.draw do
 
   resources :addresses, defaults: {format: :json}
 
+  resources :attachments, defaults: {format: :json}
+
   resources :patients, defaults: {format: :json}
 
   resources :referrals, defaults: {format: :json} do
@@ -14,6 +16,8 @@ ReferralServerRuby::Application.routes.draw do
   resources :practices, defaults: {format: :json}
 
   resources :practice_invitations, only: [:create, :destroy], defaults: {format: :json}
+
+  get :s3, to: 'attachments#s3_credentials', defaults: {format: :json}
 
   get :users, to: 'users#index'
 
