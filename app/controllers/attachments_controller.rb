@@ -30,7 +30,7 @@ class AttachmentsController < ApplicationController
 
   def s3_credentials
     respond_to do |format|
-      format.json {render json: {s3_policy: s3_policy, s3_signature: s3_signature}, status: :ok}
+      format.json {render json: {s3_policy: s3_policy, s3_signature: s3_signature, s3_access_key_id: s3_access_key_id}, status: :ok}
     end
   end
 

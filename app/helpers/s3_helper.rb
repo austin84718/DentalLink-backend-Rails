@@ -25,4 +25,8 @@ module S3Helper
             'M2YCs38llYAkHu9xstfclqlWibya7iAnQKI1MBdJ', s3_policy)
     ).gsub("\n", '')
   end
+
+  def s3_access_key_id
+    'AKIAILBX2GF4ZKEI3IWA'
+  end
 end

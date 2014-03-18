@@ -48,7 +48,7 @@ class ReferralsController < ApplicationController
     if params[:attachments]
       params[:attachments].each do |attachment|
 
-        @referral.attachments << Attachment.new({filename: attachment, referral_id: @referral.id, patient_id: @referral.patient.id})
+        @referral.attachments << Attachment.new({filename: attachment[:url], notes: attachment[:notes], referral_id: @referral.id, patient_id: @referral.patient.id})
       end
     end
 
