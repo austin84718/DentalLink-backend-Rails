@@ -23,7 +23,6 @@ class AttachmentsController < ApplicationController
   def destroy
     @attachment.destroy
     respond_to do |format|
-      format.html { redirect_to attachments_url }
       format.json { head :no_content }
     end
   end

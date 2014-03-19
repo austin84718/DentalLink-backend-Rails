@@ -7,6 +7,8 @@ ReferralServerRuby::Application.routes.draw do
 
   resources :attachments, defaults: {format: :json}
 
+  resources :notes, defaults: {format: :json}
+
   resources :patients, defaults: {format: :json}
 
   resources :referrals, defaults: {format: :json} do

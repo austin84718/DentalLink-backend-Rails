@@ -25,10 +25,8 @@ class PracticesController < ApplicationController
 
     respond_to do |format|
       if @practice.save
-        format.html { redirect_to @practice, notice: 'Practice was successfully created.' }
         format.json { render json: @practice, status: :created}
       else
-        format.html { render action: 'new' }
         format.json { render json: @practice.errors, status: :unprocessable_entity }
       end
     end
@@ -39,10 +37,8 @@ class PracticesController < ApplicationController
   def update
     respond_to do |format|
       if @practice.update(practice_params)
-        format.html { redirect_to @practice, notice: 'Practice was successfully updated.' }
         format.json { head :no_content }
       else
-        format.html { render action: 'edit' }
         format.json { render json: @practice.errors, status: :unprocessable_entity }
       end
     end
@@ -53,7 +49,6 @@ class PracticesController < ApplicationController
   def destroy
     @practice.destroy
     respond_to do |format|
-      format.html { redirect_to practices_url }
       format.json { head :no_content }
     end
   end

@@ -15,7 +15,7 @@ class ReferralsController < ApplicationController
   # GET /referrals/1.json
   def show
     respond_to do |format|
-      format.json { render json: @referral, include: [:patient, :orig_practice] }
+      format.json { render json: @referral, include: [:patient, :orig_practice, :attachments, :notes] }
     end
   end
 
@@ -47,7 +47,6 @@ class ReferralsController < ApplicationController
 
     if params[:attachments]
       params[:attachments].each do |attachment|
-
         @referral.attachments << Attachment.new({filename: attachment[:url], notes: attachment[:notes], referral_id: @referral.id, patient_id: @referral.patient.id})
       end
     end
@@ -57,10 +56,8 @@ class ReferralsController < ApplicationController
     respond_to do |format|
       if @referral.save
         send_email_to_doctor(@referral.dest_practice)
-        format.html { redirect_to @referral, notice: 'Referral was successfully created.' }
         format.json { render json: @referral, status: :created, location: @referral }
       else
-        format.html { render action: 'new' }
         format.json { render json: @referral.errors, status: :unprocessable_entity }
       end
     end
@@ -84,10 +81,8 @@ class ReferralsController < ApplicationController
   def update
     respond_to do |format|
       if @referral.update(referral_params)
-        format.html { redirect_to @referral, notice: 'Referral was successfully updated.' }
         format.json { head :no_content }
       else
-        format.html { render action: 'edit' }
         format.json { render json: @referral.errors, status: :unprocessable_entity }
       end
     end
@@ -98,7 +93,6 @@ class ReferralsController < ApplicationController
   def destroy
     @referral.destroy
     respond_to do |format|
-      format.html { redirect_to referrals_url }
       format.json { head :no_content }
     end
   end
@@ -110,16 +104,15 @@ class ReferralsController < ApplicationController
     send_email({
                    template_name: "referral-status",
                    template_content: {},
-                   global_merge_vars:{},
+                   global_merge_vars: {},
                    merge_vars: recipients.map { |u| {
-                           rcpt: u.email,
-                           vars: [
-                               {name: 'FIRST_NAME', content: u.first_name},
-                               {name: 'LAST_NAME', content: u.last_name},
-                               {name: 'STATUS', content: status}
-                           ]
-                       }
-                       },
+                       rcpt: u.email,
+                       vars: [
+                           {name: 'FIRST_NAME', content: u.first_name},
+                           {name: 'LAST_NAME', content: u.last_name},
+                           {name: 'STATUS', content: status}
+                       ]
+                   } },
                    recipients: recipients.map { |u| {email: u.email, name: "#{u.first_name} #{u.last_name}", type: 'to'} }
                })
   end
@@ -137,35 +130,35 @@ class ReferralsController < ApplicationController
                                {name: 'FIRST_NAME', content: u.first_name},
                                {name: 'LAST_NAME', content: u.last_name},
                            ]
-                       }},
-        recipients: recipients.map { |u| {email: u.email, name: "#{u.first_name} #{u.last_name}", type: 'to'} }
+                       } },
+                   recipients: recipients.map { |u| {email: u.email, name: "#{u.first_name} #{u.last_name}", type: 'to'} }
                })
   end
 
 # Use callbacks to share common setup or constraints between actions.
-def set_referral
-  @referral = Referral.find(params[:id])
-end
+  def set_referral
+    @referral = Referral.find(params[:id])
+  end
 
-def create_referral
-  @referral = Referral.new(referral_params)
-end
+  def create_referral
+    @referral = Referral.new(referral_params)
+  end
 
 # Never trust parameters from the scary internet, only allow the white list through.
-def referral_params
-  params.require(:referral).permit(:orig_practice_id, :dest_practice_id, :patient_id, :memo, :status)
-end
+  def referral_params
+    params.require(:referral).permit(:orig_practice_id, :dest_practice_id, :patient_id, :memo, :status)
+  end
 
-def practice_invitation_params
-  params.require(:practice).permit(:contact_first_name, :contact_last_name, :contact_email, :practice_name, :contact_phone)
-end
+  def practice_invitation_params
+    params.require(:practice).permit(:contact_first_name, :contact_last_name, :contact_email, :practice_name, :contact_phone)
+  end
 
-def patient_params
-  params.require(:patient).permit(:first_name, :last_name, :birthday, :email, :phone)
-end
+  def patient_params
+    params.require(:patient).permit(:first_name, :last_name, :birthday, :email, :phone)
+  end
 
-def status_params
-  params.require(:referral).permit(:status)
-end
+  def status_params
+    params.require(:referral).permit(:status)
+  end
 
 end

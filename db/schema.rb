@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140318083106) do
+ActiveRecord::Schema.define(version: 20140318145315) do
 
   create_table "addresses", force: true do |t|
     t.string   "street_line_1"
@@ -35,6 +35,15 @@ ActiveRecord::Schema.define(version: 20140318083106) do
 
   add_index "attachments", ["patient_id"], name: "index_attachments_on_patient_id"
   add_index "attachments", ["referral_id"], name: "index_attachments_on_referral_id"
+
+  create_table "notes", force: true do |t|
+    t.text     "message"
+    t.integer  "referral_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "notes", ["referral_id"], name: "index_notes_on_referral_id"
 
   create_table "patients", force: true do |t|
     t.string   "first_name"
