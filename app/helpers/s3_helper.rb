@@ -11,8 +11,8 @@ module S3Helper
         conditions: [
             {bucket: 'mezerny'},
             ['starts-with', '$key', 'uploads/'],
-            {acl: 'public-read'},
-            {success_action_status: '201'},
+            {acl: 'authenticated-read'},
+            {success_action_status: '200'},
         ]
     }
     Base64.encode64(policy_document.to_json).gsub("\n", '')

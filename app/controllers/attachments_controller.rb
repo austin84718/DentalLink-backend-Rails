@@ -1,17 +1,20 @@
 class AttachmentsController < ApplicationController
   include S3Helper
   before_action :set_attachment, only: [:destroy]
+  before_action :create_attachment, only: [:create]
 
   load_and_authorize_resource
 
   # POST /attachments
   # POST /attachments.json
   def create
-    @attachment = Attachment.new(attachment_params)
+    unless @attachment.patient_id
+      @attachment.patient = @attachment.referral.patient if @attachment.referral
+    end
 
     respond_to do |format|
       if @attachment.save
-        format.json { render  status: :created }
+        format.json { render json: @attachment, status: :created }
       else
         format.json { render json: @attachment.errors, status: :unprocessable_entity }
       end
@@ -39,8 +42,12 @@ class AttachmentsController < ApplicationController
       @attachment = Attachment.find(params[:id])
     end
 
+  def create_attachment
+    @attachment = Attachment.new(attachment_params)
+  end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def attachment_params
-      params[:attachment]
+      params.require(:attachment).permit(:filename, :referral_id, :patient_id, :notes)
     end
 end

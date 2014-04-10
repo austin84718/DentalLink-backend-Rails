@@ -32,6 +32,7 @@ class NotesController < ApplicationController
 
   def create_note
     @note = Note.new(note_params)
+    @note.user_id = current_user.id
   end
 
 
