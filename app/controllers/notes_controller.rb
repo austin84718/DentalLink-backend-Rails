@@ -8,7 +8,7 @@ class NotesController < ApplicationController
   def create
     respond_to do |format|
       if @note.save
-        format.json { render json: @note, status: :created }
+        format.json { render json: @note, status: :created, include: [:user] }
       else
         format.json { render json: @note.errors, status: :unprocessable_entity }
       end
