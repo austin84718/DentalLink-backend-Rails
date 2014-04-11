@@ -3,6 +3,6 @@ FactoryGirl.define do
     name 'My Practice'
     description  'My practice description'
     address_id 1
-    address Address.new
+    address {FactoryGirl.build(:address)}
   end
 end
