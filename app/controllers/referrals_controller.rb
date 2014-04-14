@@ -110,7 +110,8 @@ class ReferralsController < ApplicationController
                        vars: [
                            {name: 'FIRST_NAME', content: u.first_name},
                            {name: 'LAST_NAME', content: u.last_name},
-                           {name: 'STATUS', content: status}
+                           {name: 'STATUS', content: status} ,
+                           {name: 'REFERRAL_ID', content: @referral.id}
                        ]
                    } },
                    recipients: recipients.map { |u| {email: u.email, name: "#{u.first_name} #{u.last_name}", type: 'to'} }
@@ -129,6 +130,7 @@ class ReferralsController < ApplicationController
                            vars: [
                                {name: 'FIRST_NAME', content: u.first_name},
                                {name: 'LAST_NAME', content: u.last_name},
+                               {name: 'REFERRAL_ID', content: @referral.id}
                            ]
                        } },
                    recipients: recipients.map { |u| {email: u.email, name: "#{u.first_name} #{u.last_name}", type: 'to'} }

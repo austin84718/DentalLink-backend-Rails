@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140410143542) do
+ActiveRecord::Schema.define(version: 20140414141435) do
 
   create_table "addresses", force: true do |t|
     t.string   "street_line_1"
@@ -71,6 +71,13 @@ ActiveRecord::Schema.define(version: 20140410143542) do
 
   add_index "practice_invitations", ["practice_id"], name: "index_practice_invitations_on_practice_id"
 
+  create_table "practice_types", force: true do |t|
+    t.string   "code"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "practices", force: true do |t|
     t.string   "name"
     t.string   "description"
@@ -78,9 +85,21 @@ ActiveRecord::Schema.define(version: 20140410143542) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "status"
+    t.integer  "practice_type_id"
   end
 
   add_index "practices", ["address_id"], name: "index_practices_on_address_id"
+  add_index "practices", ["practice_type_id"], name: "index_practices_on_practice_type_id"
+
+  create_table "procedures", force: true do |t|
+    t.string   "code"
+    t.string   "name"
+    t.integer  "practice_type_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "procedures", ["practice_type_id"], name: "index_procedures_on_practice_type_id"
 
   create_table "referrals", force: true do |t|
     t.integer  "orig_practice_id"
