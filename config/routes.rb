@@ -15,7 +15,9 @@ ReferralServerRuby::Application.routes.draw do
     put :status, to: 'referrals#change_status', on: :member
   end
 
-  resources :practices, defaults: {format: :json}
+  resources :practices, defaults: {format: :json} do
+    get :search, to: 'practices#search', on: :collection
+  end
 
   resources :practice_invitations, only: [:create, :destroy], defaults: {format: :json}
 

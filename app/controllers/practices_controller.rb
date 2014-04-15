@@ -13,6 +13,9 @@ class PracticesController < ApplicationController
   def show
   end
 
+  def search
+    render json: Practice.where("name LIKE :prefix", prefix: "#{params[:search]}%")
+  end
 
   # GET /practices/1/edit
   def edit
