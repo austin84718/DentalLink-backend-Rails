@@ -7,11 +7,11 @@ module S3Helper
 
   def s3_policy
     policy_document = {
-        expiration: '2014-04-01T00:00:00Z',
+        expiration: 1.day.from_now.iso8601,
         conditions: [
             {bucket: 'mezerny'},
             ['starts-with', '$key', 'uploads/'],
-            {acl: 'authenticated-read'},
+            {acl: 'public-read'},
             {success_action_status: '200'},
         ]
     }
@@ -22,11 +22,11 @@ module S3Helper
     Base64.encode64(
         OpenSSL::HMAC.digest(
             OpenSSL::Digest::Digest.new('sha1'),
-            'M2YCs38llYAkHu9xstfclqlWibya7iAnQKI1MBdJ', s3_policy)
+            'MzRfEiSedou6CiD4ANf3WjMNLZ68wExqfZSUGb0V', s3_policy)
     ).gsub("\n", '')
   end
 
   def s3_access_key_id
-    'AKIAILBX2GF4ZKEI3IWA'
+    'AKIAJODIQ43TOUBITXAQ'
   end
 end
