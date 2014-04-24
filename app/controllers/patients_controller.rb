@@ -9,6 +9,10 @@ class PatientsController < ApplicationController
     render json: Patient.all, status: :ok
   end
 
+  def search
+    render json: Patient.where('first_name LIKE :search OR last_name LIKE :search OR email LIKE :search', search: "%#{params[:search]}%").limit(10)
+  end
+
   # GET /patients/1
   # GET /patients/1.json
   def show

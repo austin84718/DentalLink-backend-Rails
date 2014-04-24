@@ -9,7 +9,9 @@ ReferralServerRuby::Application.routes.draw do
 
   resources :notes, defaults: {format: :json}
 
-  resources :patients, defaults: {format: :json}
+  resources :patients, defaults: {format: :json} do
+    get :search, to: 'patients#search', on: :collection
+  end
 
   resources :referrals, defaults: {format: :json} do
     put :status, to: 'referrals#change_status', on: :member
