@@ -1,4 +1,6 @@
 ReferralServerRuby::Application.routes.draw do
+  resources :procedures
+
   #devise_for :users, controllers: {sessions:'sessions', registrations: 'registrations', passwords: 'passwords'}, token_authentication_key: 'authentication_token'
 
   devise_for :users, path: '', path_names: {  registration: 'sign_up'}, controllers: {sessions: :sessions, registrations: :registrations, passwords: :passwords}, token_authentication_key: 'authentication_token'

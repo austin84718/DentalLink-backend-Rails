@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140414141435) do
+ActiveRecord::Schema.define(version: 20140428140753) do
 
   create_table "addresses", force: true do |t|
     t.string   "street_line_1"
@@ -56,6 +56,8 @@ ActiveRecord::Schema.define(version: 20140414141435) do
     t.string   "email"
     t.string   "phone"
     t.date     "birthday"
+    t.string   "middle_initial", limit: 1
+    t.string   "salutation"
   end
 
   create_table "practice_invitations", force: true do |t|
