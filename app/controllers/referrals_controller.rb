@@ -148,7 +148,7 @@ class ReferralsController < ApplicationController
 
 # Never trust parameters from the scary internet, only allow the white list through.
   def referral_params
-    params.require(:referral).permit(:orig_practice_id, :dest_practice_id, :patient_id, :memo, :status)
+    params.require(:referral).permit(:orig_practice_id, :dest_practice_id, :patient_id, :memo, :status, :teeth)
   end
 
   def practice_invitation_params
