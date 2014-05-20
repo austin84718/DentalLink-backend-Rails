@@ -10,6 +10,10 @@ class ProceduresController < ApplicationController
     render json: Procedure.all, status: :ok
   end
 
+  def practice_types
+    render json: PracticeType.all, status: :ok, include: [:procedures]
+  end
+
   # POST /procedures
   # POST /procedures.json
   def create

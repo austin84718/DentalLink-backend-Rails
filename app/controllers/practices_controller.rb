@@ -14,7 +14,7 @@ class PracticesController < ApplicationController
   end
 
   def search
-    render json: Practice.where("name LIKE :search", search: "%#{params[:search]}%").limit(10)
+    render json: Practice.where("name LIKE :search", search: "%#{params[:search]}%").limit(10), include: [:practice_type]
   end
 
   # GET /practices/1/edit

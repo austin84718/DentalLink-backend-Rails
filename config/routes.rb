@@ -1,5 +1,5 @@
 ReferralServerRuby::Application.routes.draw do
-  resources :procedures
+  resources :procedures, defaults: {format: :json}
 
   #devise_for :users, controllers: {sessions:'sessions', registrations: 'registrations', passwords: 'passwords'}, token_authentication_key: 'authentication_token'
 
@@ -31,6 +31,7 @@ ReferralServerRuby::Application.routes.draw do
 
   get 'login',to: redirect('/pages/dentalLinks.html')
 
+  get :practice_types, to: "procedures#practice_types"
   #match 'sign_in', to: 'users#index',  via: 'OPTIONS'
   #we don't need users as a resourceful route, since we have authentication framework that handles registrations and other things
   #resources :users

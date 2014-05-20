@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
          :validatable,
          :confirmable
   belongs_to :practice
+  has_many :referrals
   validates :first_name, :last_name, :practice_id, :username, presence: true
 
   before_save :ensure_authentication_token
