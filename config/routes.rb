@@ -1,4 +1,6 @@
 ReferralServerRuby::Application.routes.draw do
+  resources :provider_invitations
+
   resources :procedures, defaults: {format: :json}
 
   #devise_for :users, controllers: {sessions:'sessions', registrations: 'registrations', passwords: 'passwords'}, token_authentication_key: 'authentication_token'
@@ -27,7 +29,8 @@ ReferralServerRuby::Application.routes.draw do
 
   get :s3, to: 'attachments#s3_credentials', defaults: {format: :json}
 
-  get :users, to: 'users#index'
+  get :users, to: 'users#index', defaults: {format: :json}
+  post :users, to: 'users#invite', defaults: {format: :json}
 
   get 'login',to: redirect('/pages/dentalLinks.html')
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140520081315) do
+ActiveRecord::Schema.define(version: 20140522171725) do
 
   create_table "addresses", force: true do |t|
     t.string   "street_line_1"
@@ -151,6 +151,7 @@ ActiveRecord::Schema.define(version: 20140520081315) do
     t.string   "unconfirmed_email"
     t.string   "authentication_token"
     t.integer  "roles_mask"
+    t.string   "status"
   end
 
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", unique: true

@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-  before_action :create_user, only: [:create]
+  before_action :create_user, only: [:create, :invite]
   load_and_authorize_resource
 
   # GET /users
@@ -12,15 +12,22 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
+    render json: @user
   end
 
-  # GET /users/new
-  def new
-    @user = User.new
-  end
 
-  # GET /users/1/edit
-  def edit
+  # POST /users
+  # POST /users.json
+  def invite
+    respond_to do |format|
+      @user.status = 'invited'
+      @user.skip_confirmation!
+      if @user.save(validate:false);
+        format.json { render json: @user, status: :created}
+      else
+        format.json { render json: @user.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   # POST /users

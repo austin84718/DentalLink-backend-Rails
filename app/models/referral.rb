@@ -11,7 +11,9 @@ class Referral < ActiveRecord::Base
   has_many :attachments
   has_many :notes
 
-  validates :orig_practice_id, :dest_practice_id, :patient_id, presence: true
+  accepts_nested_attributes_for :notes
+
+  validates :orig_practice_id, :orig_provider_id, :dest_provider_id, :patient_id, :procedure_id, presence: true
 
 
 end

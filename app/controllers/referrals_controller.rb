@@ -19,22 +19,9 @@ class ReferralsController < ApplicationController
     end
   end
 
-  # GET /referrals/new
-  def new
-    @referral = Referral.new
-  end
-
-  # GET /referrals/1/edit
-  def edit
-  end
-
   # POST /referrals
   # POST /referrals.json
   def create
-
-    unless @referral.dest_practice_id
-      @referral.dest_practice = invite_practice(practice_invitation_params)
-    end
 
     unless @referral.patient_id
       patient = Patient.create(patient_params)
@@ -43,6 +30,10 @@ class ReferralsController < ApplicationController
 
     unless @referral.orig_practice_id
       @referral.orig_practice = current_user.practice
+    end
+
+    unless @referral.orig_provider_id
+      @referral.orig_provider = current_user
     end
 
     if params[:attachments]
@@ -56,7 +47,7 @@ class ReferralsController < ApplicationController
     respond_to do |format|
       if @referral.save
         send_email_to_doctor(@referral.dest_practice)
-        format.json { render json: @referral, status: :created, location: @referral }
+        format.json { render json: @referral, status: :created}
       else
         format.json { render json: @referral.errors, status: :unprocessable_entity }
       end
@@ -148,7 +139,7 @@ class ReferralsController < ApplicationController
 
 # Never trust parameters from the scary internet, only allow the white list through.
   def referral_params
-    params.require(:referral).permit(:orig_practice_id, :dest_practice_id, :patient_id, :memo, :status, :teeth)
+    params.require(:referral).permit(:orig_practice_id, :dest_practice_id, :patient_id, :memo, :status, :teeth, :procedure_id, :dest_provider_id, notes_attributes: [:message, :created_at, :referral_id, :user_id])
   end
 
   def practice_invitation_params

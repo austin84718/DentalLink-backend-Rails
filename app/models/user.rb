@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
   has_many :referrals
   validates :first_name, :last_name, :practice_id, :username, presence: true
 
-  before_save :ensure_authentication_token
+  before_save :ensure_authentication_token, unless: Proc.new { |user| user.status == 'invited' }
 
   ROLES = %i[admin doctor aux]
   #attr_accessible :roles
