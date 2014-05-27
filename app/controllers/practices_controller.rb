@@ -1,5 +1,6 @@
 class PracticesController < ApplicationController
   before_action :set_practice, only: [:show, :edit, :update, :destroy]
+  before_action :create_practice, only: [:create]
   load_and_authorize_resource
 
   # GET /practices
@@ -11,21 +12,17 @@ class PracticesController < ApplicationController
   # GET /practices/1
   # GET /practices/1.json
   def show
+    render json: @practice, include: [:address, :users], status: :ok
   end
 
   def search
     render json: Practice.where("name LIKE :search", search: "%#{params[:search]}%").limit(10), include: [:practice_type, :users]
   end
 
-  # GET /practices/1/edit
-  def edit
-  end
 
   # POST /practices
   # POST /practices.json
   def create
-    @practice = Practice.new(practice_params)
-
     respond_to do |format|
       if @practice.save
         format.json { render json: @practice, status: :created}
@@ -62,8 +59,12 @@ class PracticesController < ApplicationController
       @practice = Practice.find(params[:id])
     end
 
+    def create_practice
+      @practice = Practice.new(practice_params)
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def practice_params
-      params.require(:practice).permit(:name, :description, :address_id)
+      params.require(:practice).permit(:name, :description, :address_id, address_attributes: [:id, :street_line_1, :city, :state, :zip, :phone, :website])
     end
 end

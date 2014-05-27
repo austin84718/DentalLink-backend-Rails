@@ -6,6 +6,8 @@ class Practice < ActiveRecord::Base
   has_many :referrals
   has_many :users
 
+  accepts_nested_attributes_for :address
+
   validates :name, presence: true
   validates :address, presence: true, unless: :invited?
 

@@ -11,6 +11,8 @@ class User < ActiveRecord::Base
          :confirmable
   belongs_to :practice
   has_many :referrals
+  has_many :invitees , class_name: 'User', foreign_key: 'inviter_id'
+  belongs_to :inviter, class_name: 'User'
   validates :first_name, :last_name, :practice_id, :username, presence: true
 
   before_save :ensure_authentication_token, unless: Proc.new { |user| user.status == 'invited' }

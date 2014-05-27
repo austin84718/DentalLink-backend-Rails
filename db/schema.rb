@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140522171725) do
+ActiveRecord::Schema.define(version: 20140527142310) do
 
   create_table "addresses", force: true do |t|
     t.string   "street_line_1"
@@ -21,6 +21,8 @@ ActiveRecord::Schema.define(version: 20140522171725) do
     t.string   "zip"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "phone"
+    t.string   "website"
   end
 
   create_table "attachments", force: true do |t|
@@ -152,11 +154,13 @@ ActiveRecord::Schema.define(version: 20140522171725) do
     t.string   "authentication_token"
     t.integer  "roles_mask"
     t.string   "status"
+    t.integer  "inviter_id"
   end
 
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", unique: true
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
   add_index "users", ["email"], name: "index_users_on_email", unique: true
+  add_index "users", ["inviter_id"], name: "index_users_on_inviter_id"
   add_index "users", ["practice_id"], name: "index_users_on_practice_id"
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
 

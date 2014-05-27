@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    render json: User.all, status: :ok
+    render json: User.all, include: [:practice], status: :ok
   end
 
   # GET /users/1
@@ -15,6 +15,9 @@ class UsersController < ApplicationController
     render json: @user
   end
 
+  def invitees
+    render json: User.where(inviter_id: params[:user_id])
+  end
 
   # POST /users
   # POST /users.json
@@ -30,8 +33,6 @@ class UsersController < ApplicationController
     end
   end
 
-  # POST /users
-  # POST /users.json
   def create
     respond_to do |format|
       if @user.save
@@ -47,7 +48,7 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update(user_params)
-        format.json { head :no_content }
+        format.json { render json: @user, status: :ok }
       else
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
@@ -75,6 +76,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:group, :title, :first_name, :email, :middle_initial, :last_name, :username, :password, :practice_id, :roles)
+      params.require(:user).permit(:group, :title, :first_name, :email, :middle_initial, :last_name, :username, :password, :practice_id, :roles, :inviter_id, :status, :roles_mask)
     end
 end
