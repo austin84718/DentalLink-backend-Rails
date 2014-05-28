@@ -8,8 +8,13 @@ class ReferralsController < ApplicationController
   # GET /referrals
   # GET /referrals.json
   def index
-    @referrals = Referral.all
+    render json: Referral.all, include: [:dest_provider, :orig_provider, :procedure]
   end
+
+  def referrals_by_practice
+    render json: Referral.where('orig_practice_id = :id OR dest_practice_id = :id', id: params[:id]), include: [:orig_practice, :dest_practice, :dest_provider, :orig_provider, :patient]
+  end
+
 
   # GET /referrals/1
   # GET /referrals/1.json

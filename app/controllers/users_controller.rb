@@ -25,8 +25,8 @@ class UsersController < ApplicationController
     respond_to do |format|
       @user.status = 'invited'
       @user.skip_confirmation!
-      if @user.save(validate:false);
-        format.json { render json: @user, status: :created}
+      if @user.save(validate: false);
+        format.json { render json: @user, status: :created }
       else
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
@@ -58,24 +58,27 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
-    @user.destroy
     respond_to do |format|
-      format.json { head :no_content }
+      if @user.destroy
+        format.json { render json: @user, status: :ok }
+      else
+        format.json { render json: @user.errors, status: :unprocessable_entity }
+      end
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_user
-      @user = User.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_user
+    @user = User.find(params[:id])
+  end
 
   def create_user
     @user = User.new(user_params)
   end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def user_params
-      params.require(:user).permit(:group, :title, :first_name, :email, :middle_initial, :last_name, :username, :password, :practice_id, :roles, :inviter_id, :status, :roles_mask)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def user_params
+    params.require(:user).permit(:group, :title, :first_name, :email, :middle_initial, :last_name, :username, :password, :practice_id, :roles, :inviter_id, :status, :roles_mask)
+  end
 end

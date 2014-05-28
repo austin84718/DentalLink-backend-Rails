@@ -5,7 +5,7 @@ ReferralServerRuby::Application.routes.draw do
 
   #devise_for :users, controllers: {sessions:'sessions', registrations: 'registrations', passwords: 'passwords'}, token_authentication_key: 'authentication_token'
 
-  devise_for :users, path: '', path_names: {  registration: 'sign_up'}, controllers: {sessions: :sessions, registrations: :registrations, passwords: :passwords}, token_authentication_key: 'authentication_token'
+  devise_for :users, path: '', path_names: {registration: 'sign_up'}, controllers: {sessions: :sessions, registrations: :registrations, passwords: :passwords}, token_authentication_key: 'authentication_token'
 
   resources :addresses, defaults: {format: :json}
 
@@ -19,6 +19,7 @@ ReferralServerRuby::Application.routes.draw do
 
   resources :referrals, defaults: {format: :json} do
     put :status, to: 'referrals#change_status', on: :member
+    get 'practice/:id', to: 'referrals#referrals_by_practice', on: :collection
   end
 
   resources :practices, defaults: {format: :json} do
@@ -34,9 +35,10 @@ ReferralServerRuby::Application.routes.draw do
   get 'users/:id', to: 'users#show', defaults: {format: :json}
   get 'invitees/:user_id', to: 'users#invitees', defaults: {format: :json}
   post :users, to: 'users#invite', defaults: {format: :json}
+  delete :users, to: 'users#destroy', defaults: {format: :json}
   put 'users/:id', to: 'users#update', defaults: {format: :json}
 
-  get 'login',to: redirect('/pages/dentalLinks.html')
+  get 'login', to: redirect('/pages/dentalLinks.html')
 
   get :practice_types, to: "procedures#practice_types"
   #match 'sign_in', to: 'users#index',  via: 'OPTIONS'
@@ -83,7 +85,7 @@ ReferralServerRuby::Application.routes.draw do
   #       get 'recent', on: :collection
   #     end
   #   end
-  
+
   # Example resource route with concerns:
   #   concern :toggleable do
   #     post 'toggle'
