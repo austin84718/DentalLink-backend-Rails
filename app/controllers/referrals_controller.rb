@@ -12,7 +12,10 @@ class ReferralsController < ApplicationController
   end
 
   def referrals_by_practice
-    render json: Referral.where('orig_practice_id = :id OR dest_practice_id = :id', id: params[:id]), include: [:orig_practice, :dest_practice, :dest_provider, :orig_provider, :patient]
+    render json: Referral
+    .where('orig_practice_id = :id OR dest_practice_id = :id', id: params[:id])
+    .where(created_at: params[:start_date]..params[:end_date]),
+           include: [:orig_practice, :dest_practice, :dest_provider, :orig_provider, :patient]
   end
 
 
@@ -20,7 +23,7 @@ class ReferralsController < ApplicationController
   # GET /referrals/1.json
   def show
     respond_to do |format|
-      format.json { render json: @referral, include: {patient:{}, attachments:{}, procedure:{include: :practice_type}, orig_provider: {include: :practice}, dest_provider: {include: :practice},  notes: {include: :user}} }
+      format.json { render json: @referral, include: {patient: {}, attachments: {}, procedure: {include: :practice_type}, orig_provider: {include: :practice}, dest_provider: {include: :practice}, notes: {include: :user}} }
     end
   end
 
@@ -52,7 +55,7 @@ class ReferralsController < ApplicationController
     respond_to do |format|
       if @referral.save
         send_email_to_doctor(@referral.dest_practice)
-        format.json { render json: @referral, status: :created}
+        format.json { render json: @referral, status: :created }
       else
         format.json { render json: @referral.errors, status: :unprocessable_entity }
       end
@@ -106,7 +109,7 @@ class ReferralsController < ApplicationController
                        vars: [
                            {name: 'FIRST_NAME', content: u.first_name},
                            {name: 'LAST_NAME', content: u.last_name},
-                           {name: 'STATUS', content: status} ,
+                           {name: 'STATUS', content: status},
                            {name: 'REFERRAL_ID', content: @referral.id}
                        ]
                    } },
