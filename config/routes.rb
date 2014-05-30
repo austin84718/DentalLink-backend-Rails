@@ -35,7 +35,7 @@ ReferralServerRuby::Application.routes.draw do
   get 'users/:id', to: 'users#show', defaults: {format: :json}
   get 'invitees/:user_id', to: 'users#invitees', defaults: {format: :json}
   post :users, to: 'users#invite', defaults: {format: :json}
-  delete :users, to: 'users#destroy', defaults: {format: :json}
+  delete 'users/:id', to: 'users#destroy', defaults: {format: :json}
   put 'users/:id', to: 'users#update', defaults: {format: :json}
 
   get 'login', to: redirect('/pages/dentalLinks.html')
