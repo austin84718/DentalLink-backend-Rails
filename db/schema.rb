@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140529124757) do
+ActiveRecord::Schema.define(version: 20140530094515) do
 
   create_table "addresses", force: true do |t|
     t.string   "street_line_1"
@@ -94,6 +94,10 @@ ActiveRecord::Schema.define(version: 20140529124757) do
     t.string   "name_on_card"
     t.integer  "card_exp_month"
     t.integer  "card_exp_year"
+    t.string   "salutation"
+    t.string   "account_first_name"
+    t.string   "account_last_name"
+    t.string   "account_middle_initial"
   end
 
   add_index "practices", ["address_id"], name: "index_practices_on_address_id"

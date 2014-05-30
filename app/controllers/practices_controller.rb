@@ -65,6 +65,18 @@ class PracticesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def practice_params
-      params.require(:practice).permit(:name, :description, :address_id, :card_number, :name_on_card, :card_exp_month, :card_exp_year, address_attributes: [:id, :street_line_1, :city, :state, :zip, :phone, :website])
+      params.require(:practice).permit(
+          :name,
+          :description,
+          :address_id,
+          :card_number,
+          :name_on_card,
+          :card_exp_month,
+          :card_exp_year,
+          :salutation,
+          :account_first_name,
+          :account_last_name,
+          :account_middle_initial,
+          address_attributes: [:id, :street_line_1, :city, :state, :zip, :phone, :website])
     end
 end
