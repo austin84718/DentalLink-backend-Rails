@@ -23,7 +23,7 @@ class ReferralsController < ApplicationController
   # GET /referrals/1.json
   def show
     respond_to do |format|
-      format.json { render json: @referral, include: {patient: {}, attachments: {}, procedure: {include: :practice_type}, orig_provider: {include: :practice}, dest_provider: {include: :practice}, notes: {include: :user}} }
+      format.json { render json: @referral, include: {patient: {}, attachments: {}, procedure: {include: :practice_type}, orig_provider: {include: :practice}, dest_provider: {include: {practice: {include: :users}}}, notes: {include: :user}} }
     end
   end
 
