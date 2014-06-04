@@ -18,6 +18,7 @@ ReferralServerRuby::Application.routes.draw do
   end
 
   resources :referrals, defaults: {format: :json} do
+    post :template, to: 'referrals#save_template', on: :new
     put :status, to: 'referrals#change_status', on: :member
     get 'practice/:id', to: 'referrals#referrals_by_practice', on: :collection
   end

@@ -3,7 +3,7 @@ class ReferralsController < ApplicationController
   include MailHelper
 
   before_action :set_referral, only: [:show, :edit, :update, :change_status, :destroy]
-  before_action :create_referral, only: [:create]
+  before_action :create_referral, only: [:create, :save_template]
   load_and_authorize_resource
   # GET /referrals
   # GET /referrals.json
@@ -30,7 +30,20 @@ class ReferralsController < ApplicationController
   # POST /referrals
   # POST /referrals.json
   def create
+    prepare_referral
+    @referral.status = :sent
 
+    respond_to do |format|
+      if @referral.save
+        send_email_to_doctor(@referral.dest_practice)
+        format.json { render json: @referral, status: :created }
+      else
+        format.json { render json: @referral.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def prepare_referral
     unless @referral.patient_id
       patient = Patient.create(patient_params)
       @referral.patient = patient
@@ -49,12 +62,14 @@ class ReferralsController < ApplicationController
         @referral.attachments << Attachment.new({filename: attachment[:url], notes: attachment[:notes], referral_id: @referral.id, patient_id: @referral.patient.id})
       end
     end
+  end
 
-    @referral.status = :sent
-
+  #this method is used for saving not-ready referral. It then should be reviewed by provider (doctor) and sent to destination.
+  def save_template
+    prepare_referral
+    @referral.status = :new
     respond_to do |format|
       if @referral.save
-        send_email_to_doctor(@referral.dest_practice)
         format.json { render json: @referral, status: :created }
       else
         format.json { render json: @referral.errors, status: :unprocessable_entity }
@@ -78,9 +93,10 @@ class ReferralsController < ApplicationController
   # PATCH/PUT /referrals/1
   # PATCH/PUT /referrals/1.json
   def update
+    prepare_referral
     respond_to do |format|
       if @referral.update(referral_params)
-        format.json { head :no_content }
+        format.json { render json: @referral, status: :ok }
       else
         format.json { render json: @referral.errors, status: :unprocessable_entity }
       end
@@ -147,7 +163,7 @@ class ReferralsController < ApplicationController
 
 # Never trust parameters from the scary internet, only allow the white list through.
   def referral_params
-    params.require(:referral).permit(:orig_practice_id, :dest_practice_id, :patient_id, :memo, :status, :teeth, :procedure_id, :dest_provider_id, notes_attributes: [:message, :created_at, :referral_id, :user_id])
+    params.require(:referral).permit(:orig_practice_id, :dest_practice_id, :patient_id, :memo, :status, :teeth, :procedure_id, :dest_provider_id, notes_attributes: [:id, :message, :created_at, :referral_id, :user_id])
   end
 
   def practice_invitation_params
