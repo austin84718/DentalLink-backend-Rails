@@ -70,6 +70,7 @@ class PracticesController < ApplicationController
           :description,
           :address_id,
           :card_number,
+          :card_cvc,
           :name_on_card,
           :card_exp_month,
           :card_exp_year,
@@ -77,6 +78,8 @@ class PracticesController < ApplicationController
           :account_first_name,
           :account_last_name,
           :account_middle_initial,
+          :stripe_token,
+          :account_email,
           address_attributes: [:id, :street_line_1, :city, :state, :zip, :phone, :website])
     end
 end
