@@ -28,7 +28,7 @@ module ReferralServerRuby
     config.autoload_paths += %W(#{config.root}/lib)
 
     #Provide CORS support
-    config.middleware.use Rack::Cors do
+    config.middleware.insert_before Warden::Manager, Rack::Cors do
       allow do
         origins '*'
         resource '*', headers: :any, methods: [:get, :post, :put, :patch, :delete, :options]
