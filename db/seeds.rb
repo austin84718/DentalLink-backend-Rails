@@ -65,14 +65,3 @@
     Procedure.find_or_create_by({name: procedure[:name], code: procedure[:code], practice_type: p_type})
   end
 end
-
-address = Address.new(street_line_1: '100 medway road / suite 203', city: 'Milford', state: 'MA', zip: '01757')
-address.save!
-
-p = Practice.new(name: 'David Wolf, DDS', practice_type_id: 1, address_id: address.id)
-p.save!
-
-user = User.new(group: 'test group', practice_id: p.id,  title: 'Mr.', first_name: 'Alexei', middle_initial: ' ', last_name: 'Vidmich', username: 'test', password: '12345678', password_confirmation: '12345678', roles_mask: 3, email: 'alexei@vidmich.com')
-user.skip_confirmation!
-user.save!
-puts 'User created'
