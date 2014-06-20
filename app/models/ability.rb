@@ -6,7 +6,7 @@ class Ability
     user ||= User.new # guest user (not logged in)
 
     can :create, User if user.is? :admin
-    can :manage, [PracticeInvitation, Referral, Patient, Practice, Procedure, User, Attachment, Note] if user.is? :doctor
+    can :manage, [PracticeInvitation, ProviderInvitation, Referral, Patient, Practice, Procedure, User, Attachment, Note] if user.is? :doctor
     can :read, Referral if user.is? :aux
 
     # The first argument to `can` is the action you are giving the user 

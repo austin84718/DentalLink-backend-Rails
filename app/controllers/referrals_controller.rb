@@ -1,5 +1,4 @@
 class ReferralsController < ApplicationController
-  include InviteHelper
   include MailHelper
 
   before_action :set_referral, only: [:show, :edit, :update, :change_status, :destroy]

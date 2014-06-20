@@ -9,12 +9,16 @@ class RegistrationsController < Devise::RegistrationsController
 
   def create
     build_resource(sign_up_params)
-
-    if resource.save
+    #TODO change roles hardcoding to some other behavior
+    resource.roles= [:doctor]
+    resource.skip_confirmation!
+    invitation = ProviderInvitation.find_by(token: params[:invitation_token], status: 'invited')
+    if invitation && resource.save
       unless resource.active_for_authentication?
         expire_data_after_sign_in!
       end
-      render json: resource, status: :ok
+      invitation.update(registered_user: resource, status: 'registered')
+      render json: resource, methods: :roles, status: :ok
     else
       clean_up_passwords resource
       render status: :unprocessable_entity, json: {errors: resource.errors}
@@ -44,7 +48,7 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def sign_up_params
-    params.require(:user).permit( :username, :email, :password, :password_confirmation, :first_name, :last_name, :practice_id, :roles_mask, :middle_initial)
+    params.require(:user).permit(:title, :email, :password, :password_confirmation, :first_name, :last_name, :practice_id, :middle_initial)
   end
 
   def set_csrf_header

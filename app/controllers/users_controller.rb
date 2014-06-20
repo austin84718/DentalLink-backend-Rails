@@ -15,24 +15,6 @@ class UsersController < ApplicationController
     render json: @user
   end
 
-  def invitees
-    render json: User.where(inviter_id: params[:user_id])
-  end
-
-  # POST /users
-  # POST /users.json
-  def invite
-    respond_to do |format|
-      @user.status = 'invited'
-      @user.skip_confirmation!
-      if @user.save(validate: false);
-        format.json { render json: @user, status: :created }
-      else
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
   def create
     respond_to do |format|
       if @user.save
@@ -79,6 +61,6 @@ class UsersController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def user_params
-    params.require(:user).permit(:group, :title, :first_name, :email, :middle_initial, :last_name, :username, :password, :practice_id, :roles, :inviter_id, :status, :roles_mask)
+    params.require(:user).permit( :title, :first_name, :email, :middle_initial, :last_name, :password, :practice_id, :roles, :roles_mask)
   end
 end

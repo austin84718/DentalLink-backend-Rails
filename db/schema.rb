@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140609124157) do
+ActiveRecord::Schema.define(version: 20140620103005) do
 
   create_table "addresses", force: true do |t|
     t.string   "street_line_1"
@@ -117,6 +117,21 @@ ActiveRecord::Schema.define(version: 20140609124157) do
 
   add_index "procedures", ["practice_type_id"], name: "index_procedures_on_practice_type_id"
 
+  create_table "provider_invitations", force: true do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "email"
+    t.string   "token"
+    t.string   "status"
+    t.integer  "inviter_id"
+    t.integer  "registered_user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "provider_invitations", ["inviter_id"], name: "index_provider_invitations_on_inviter_id"
+  add_index "provider_invitations", ["registered_user_id"], name: "index_provider_invitations_on_registered_user_id"
+
   create_table "referrals", force: true do |t|
     t.integer  "orig_practice_id"
     t.integer  "dest_practice_id"
@@ -139,12 +154,10 @@ ActiveRecord::Schema.define(version: 20140609124157) do
   add_index "referrals", ["procedure_id"], name: "index_referrals_on_procedure_id"
 
   create_table "users", force: true do |t|
-    t.string   "group"
     t.string   "title"
     t.string   "first_name"
     t.string   "middle_initial",         limit: 1
     t.string   "last_name"
-    t.string   "username"
     t.string   "password"
     t.integer  "practice_id"
     t.datetime "created_at"
@@ -165,14 +178,11 @@ ActiveRecord::Schema.define(version: 20140609124157) do
     t.string   "unconfirmed_email"
     t.string   "authentication_token"
     t.integer  "roles_mask"
-    t.string   "status"
-    t.integer  "inviter_id"
   end
 
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", unique: true
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
   add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["inviter_id"], name: "index_users_on_inviter_id"
   add_index "users", ["practice_id"], name: "index_users_on_practice_id"
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
 

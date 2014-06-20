@@ -15,11 +15,6 @@ describe User do
       it { should_not be_valid }
     end
 
-    describe 'is invalid without a username' do
-      before { subject.username = nil }
-      it { should_not be_valid }
-    end
-
     describe 'is invalid without a practice_id' do
       before { subject.practice_id = nil }
       it { should_not be_valid }

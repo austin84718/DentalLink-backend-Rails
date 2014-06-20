@@ -1,7 +1,12 @@
 class PracticesController < ApplicationController
   before_action :set_practice, only: [:show, :edit, :update, :destroy]
   before_action :create_practice, only: [:create]
-  load_and_authorize_resource
+  load_and_authorize_resource except: [:search]
+
+  skip_authorization_check only: [:search]
+  skip_before_filter :authenticate_user_from_token!, only: [:search]
+  skip_before_filter :authenticate_user!, only: [:search]
+
 
   # GET /practices
   # GET /practices.json
